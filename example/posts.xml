@@ -1,4 +1,4 @@
-<main import="posts/lorem-ipsum.xml" values="title=h2[1];content=p[2]">
+<main import="posts/lorem-ipsum.xml" values="title=h2[1];content=p[1]">
   <h2>Posts</h2>
   <ul>
     <li>

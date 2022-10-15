@@ -71,7 +71,7 @@ Starting with the following files:
 
 * [*about.xml*](example/posts.xml):
 ```xml
-<main import="posts/lorem-ipsum.xml" values="title=h2[1];content=p[2]">
+<main import="posts/lorem-ipsum.xml" values="title=h2[1];content=p[1]">
   <h2>Posts</h2>
   <ul>
     <li>
@@ -158,7 +158,7 @@ Starting with the following files:
           <a href="/posts/lorem-ipsum.html">
             <article>
               <h3>Lorem Ipsum</h3>
-              <p>Quis ex cum fuga nesciunt laboriosam ut excepturi. Maxime aut molestias non repellat facilis debitis. In sit temporibus dolore eligendi in voluptatem odit omnis.</p>
+              <p>Laborum aut cumque dolorem corrupti consequatur amet nihil. Laboriosam dolore minima voluptatum sunt odit. Nulla delectus eum qui. Et voluptatem debitis atque voluptas et quia reiciendis.</p>
             </article>
           </a>
         </li>
