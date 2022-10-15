@@ -16,7 +16,6 @@ def main():
     # start from the hrefs in template tree, and do a bfs
     pages = dict()
     hrefs = set(get_ahrefs_iter(template_tree))
-
     while hrefs:
         href = hrefs.pop()
         if re.match(html_file_pattern, href) and href not in pages:
@@ -25,6 +24,24 @@ def main():
             hrefs.update(get_ahrefs_iter(page_tree))
             pages[href] = page_tree
 
+    # fill in imported values
+    for page_tree in pages.values():
+        page_tree_attrib = page_tree.getroot().attrib
+        if 'import' in page_tree_attrib and 'values' in page_tree_attrib:
+            # load the tree if it isn't already loaded
+            import_href = f'/{page_tree_attrib["import"][:-4]}.html'
+            if import_href in pages:
+                imported_tree = pages[import_href]
+            else:
+                imported_tree = ElementTree.parse(page_tree_attrib['import'])
+
+            for key_value in page_tree_attrib['values'].split(';'):
+                key, value = key_value.split('=')
+                for e in page_tree.iterfind(f'.//*[@import-value="{key}"]'):
+                    e.clear()
+                    e.text = imported_tree.find(value).text
+
+    # fill the template, and write it
     for href, page_tree in pages.items():
         main_tree = template_tree.find('.//main')
         main_tree.clear()

@@ -1,0 +1,13 @@
+<main import="posts/lorem-ipsum.xml" values="title=h2[1];content=p[2]">
+  <h2>Posts</h2>
+  <ul>
+    <li>
+      <a href="/posts/lorem-ipsum.html">
+        <article>
+          <h3 import-value="title" />
+          <p import-value="content" />
+        </article>
+      </a>
+    </li>
+  </ul>
+</main>
