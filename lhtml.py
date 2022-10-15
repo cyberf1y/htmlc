@@ -1,39 +1,41 @@
-import re
 from xml.etree import ElementTree
 
 
-def get_ahrefs_iter(tree):
-    """Return an iterator yielding the hrefs of all anchors in the tree."""
-    return (a.attrib['href'] for a in tree.iterfind('.//a[@href]'))
-
-
 def main():
-    template_tree = ElementTree.parse('template.xml')
-
-    # match site root relative paths to .html files
-    html_file_pattern = re.compile(r'/.+\.html')
-
-    # start from the hrefs in template tree, and do a bfs
+    # starting with template.xml, follow the hrefs in a bfs manner
+    hrefs = set(['/template.html'])
     pages = dict()
-    hrefs = set(get_ahrefs_iter(template_tree))
     while hrefs:
         href = hrefs.pop()
-        if re.match(html_file_pattern, href) and href not in pages:
-            # /path/to/page.html corresponds to path/to/page.xml
+        href_is_root_relative = href.startswith('/') and href.endswith('.html')
+        if href_is_root_relative and href not in pages:
+            # /path/to/page.html is produced using path/to/page.xml
             page_tree = ElementTree.parse(f'{href[1:-5]}.xml')
-            hrefs.update(get_ahrefs_iter(page_tree))
+            hrefs.update(
+                a.attrib['href'] for a in page_tree.iterfind('.//a[@href]'))
             pages[href] = page_tree
 
-    # fill in titles, and imported values
-    for page_tree in pages.values():
+    template_tree = pages.pop('/template.html')
+    template_tree_root = template_tree.getroot()
+    title_element = template_tree.find('head/title')
+    title = title_element.text
+    template_main_tree = template_tree.find('.//main')
+
+    for href, page_tree in pages.items():
         page_tree_attrib = page_tree.getroot().attrib
+
+        # fill the title
         if 'title' in page_tree_attrib:
+            title_element.text = f'{page_tree_attrib["title"]} | {title}'
             for e in page_tree.iterfind('.//*[@title-value="true"]'):
                 e.clear()
                 e.text = page_tree_attrib['title']
+        else:
+            title_element.text = title
 
+        # import values
         if 'import' in page_tree_attrib and 'values' in page_tree_attrib:
-            # load the tree if it isn't already loaded
+            # load the tree only if it isn't already loaded
             import_href = f'/{page_tree_attrib["import"][:-4]}.html'
             if import_href in pages:
                 imported_tree = pages[import_href]
@@ -44,31 +46,20 @@ def main():
                 key, value = key_value.split('=')
                 for e in page_tree.iterfind(f'.//*[@import-value="{key}"]'):
                     e.clear()
-                    imported_value_element = imported_tree.find(value)
-                    if imported_value_element.text:
-                        e.text = imported_value_element.text
-                    elif f'{key}-value' in imported_value_element.attrib:
+                    import_value_element = imported_tree.find(value)
+                    if import_value_element.text:
+                        e.text = import_value_element.text
+                    elif f'{key}-value' in import_value_element.attrib:
                         e.text = imported_tree.getroot().attrib[key]
 
-    title_element = template_tree.find('head/title')
-    title = title_element.text
-
-    # fill the template, and write it
-    for href, page_tree in pages.items():
-        page_tree_attrib = page_tree.getroot().attrib
-        if 'title' in page_tree_attrib:
-            title_element.text = f'{page_tree_attrib["title"]} | {title}'
-        else:
-            title_element.text = title
-
-        main_tree = template_tree.find('.//main')
-        main_tree.clear()
-        main_tree.extend(page_tree.iterfind('.*'))
+        # fill the template's main
+        template_main_tree.clear()
+        template_main_tree.extend(page_tree.iterfind('.*'))
         ElementTree.indent(template_tree, space='  ', level=0)
+        page = ElementTree.tostring(
+            template_tree_root, encoding='utf-8', method='html')
 
-        page_root = template_tree.getroot()
-        page = ElementTree.tostring(page_root, encoding='utf-8', method='html')
-
+        # write the page
         with open(href[1:], 'wb') as file:
             file.write(b'<!DOCTYPE html>\n')
             file.write(page)

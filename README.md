@@ -85,8 +85,7 @@ Starting with the following files:
         </ul>
       </nav>
     </header>
-    <main>
-    </main>
+    <main />
     <footer>
       <p><small>Copyright &#169; cyberf1y 2022</small></p>
     </footer>
@@ -243,7 +242,7 @@ Starting with the following files:
 ```
 
 #### Note
-You can reproduce the example by running the following commands:
+You can reproduce the example by running the commands:
 ```sh
 cd example
 py ../lhtml.py
