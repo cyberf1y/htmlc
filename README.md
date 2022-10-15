@@ -99,7 +99,7 @@ Starting with the following files:
 ```
 
 *lhtml* will write the following:
-* *index.html*
+* [*index.html*](example/index.html)
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -131,7 +131,7 @@ Starting with the following files:
 </html>
 ```
 
-* *posts.html*
+* [*posts.html*](example/posts.html)
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -173,7 +173,7 @@ Starting with the following files:
 </html>
 ```
 
-* *posts/lorem-ipsum.html*
+* [*posts/lorem-ipsum.html*](example/posts/lorem-ipsum.html)
 ```html
 <!DOCTYPE html>
 <html lang="en">
