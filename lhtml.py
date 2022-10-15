@@ -1,6 +1,14 @@
 from xml.etree import ElementTree
 
 
+class LHTMLError(Exception):
+    """Add more information to ElementTree.ParseError"""
+
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
 def main():
     # starting with template.xml, follow the hrefs in a bfs manner
     hrefs = set(['/template.html'])
@@ -10,7 +18,11 @@ def main():
         href_is_root_relative = href.startswith('/') and href.endswith('.html')
         if href_is_root_relative and href not in pages:
             # /path/to/page.html is produced using path/to/page.xml
-            page_tree = ElementTree.parse(f'{href[1:-5]}.xml')
+            try:
+                page_tree = ElementTree.parse(f'{href[1:-5]}.xml')
+            except ElementTree.ParseError as err:
+                raise LHTMLError(f'{href[1:-5]}.xml: {err}') from err
+
             hrefs.update(
                 a.attrib['href'] for a in page_tree.iterfind('.//a[@href]'))
             pages[href] = page_tree
