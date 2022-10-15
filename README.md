@@ -11,6 +11,38 @@ py lhtml.py
 Given a *template.xml*, follow all the hrefs in it, and generate html pages with
 the *main* element replaced.
 
+### Titles
+Given the following syntax:
+```xml
+<main title="Subtitle">
+  <h2 title-value="true" />
+</main>
+```
+and the following *template.xml*:
+```xml
+<html lang="en">
+  <head>
+    <title>cyberf1y</title>
+  </head>
+  <body>
+    <main />
+  </body>
+</html>
+```
+*lhtml* will set *Subtitle* in the html like this:
+```html
+<html lang="en">
+  <head>
+    <title>Subtitle | cyberf1y</title>
+  </head>
+  <body>
+    <main>
+      <h2>Subtitle</h2>
+    </main>
+  </body>
+</html>
+```
+
 ### Imports
 The following syntax allows reusing parts of xml files:
 ```xml
@@ -42,7 +74,7 @@ Starting with the following files:
 ```xml
 <html lang="en">
   <head>
-    <title>site</title>
+    <title>cyberf1y</title>
   </head>
   <body>
     <header>
@@ -69,10 +101,10 @@ Starting with the following files:
 </main>
 ```
 
-* [*about.xml*](example/posts.xml):
+* [*posts.xml*](example/posts.xml):
 ```xml
-<main import="posts/lorem-ipsum.xml" values="title=h2[1];content=p[1]">
-  <h2>Posts</h2>
+<main title="Posts" import="posts/lorem-ipsum.xml" values="title=h2[1];content=p[1]">
+  <h2 title-value="true" />
   <ul>
     <li>
       <a href="/posts/lorem-ipsum.html">
@@ -88,8 +120,8 @@ Starting with the following files:
 
 * [*posts/lorem-ipsum.xml*](example/posts/lorem-ipsum.xml):
 ```xml
-<main>
-  <h2>Lorem Ipsum</h2>
+<main title="Lorem Ipsum">
+  <h2 title-value="true" />
   <p>Laborum aut cumque dolorem corrupti consequatur amet nihil. Laboriosam dolore minima voluptatum sunt odit. Nulla delectus eum qui. Et voluptatem debitis atque voluptas et quia reiciendis.</p>
   <p>Quis ex cum fuga nesciunt laboriosam ut excepturi. Maxime aut molestias non repellat facilis debitis. In sit temporibus dolore eligendi in voluptatem odit omnis.</p>
   <p>Aliquid est dolore laudantium dolorem autem quae. In impedit rerum explicabo ipsam error sunt eum. Autem fuga voluptas est voluptates a repudiandae enim. Dolores aliquam vero ea odio et fugit minima. Est consequatur culpa iste ut minus tenetur possimus.</p>
@@ -104,7 +136,7 @@ Starting with the following files:
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>site</title>
+    <title>cyberf1y</title>
   </head>
   <body>
     <header>
@@ -136,7 +168,7 @@ Starting with the following files:
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>site</title>
+    <title>Posts | cyberf1y</title>
   </head>
   <body>
     <header>
@@ -178,7 +210,7 @@ Starting with the following files:
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>site</title>
+    <title>Lorem Ipsum | cyberf1y</title>
   </head>
   <body>
     <header>

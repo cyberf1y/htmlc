@@ -1,5 +1,5 @@
-<main import="posts/lorem-ipsum.xml" values="title=h2[1];content=p[1]">
-  <h2>Posts</h2>
+<main title="Posts" import="posts/lorem-ipsum.xml" values="title=h2[1];content=p[1]">
+  <h2 title-value="true" />
   <ul>
     <li>
       <a href="/posts/lorem-ipsum.html">

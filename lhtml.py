@@ -24,9 +24,14 @@ def main():
             hrefs.update(get_ahrefs_iter(page_tree))
             pages[href] = page_tree
 
-    # fill in imported values
+    # fill in titles, and imported values
     for page_tree in pages.values():
         page_tree_attrib = page_tree.getroot().attrib
+        if 'title' in page_tree_attrib:
+            for e in page_tree.iterfind('.//*[@title-value="true"]'):
+                e.clear()
+                e.text = page_tree_attrib['title']
+
         if 'import' in page_tree_attrib and 'values' in page_tree_attrib:
             # load the tree if it isn't already loaded
             import_href = f'/{page_tree_attrib["import"][:-4]}.html'
@@ -39,10 +44,23 @@ def main():
                 key, value = key_value.split('=')
                 for e in page_tree.iterfind(f'.//*[@import-value="{key}"]'):
                     e.clear()
-                    e.text = imported_tree.find(value).text
+                    imported_value_element = imported_tree.find(value)
+                    if imported_value_element.text:
+                        e.text = imported_value_element.text
+                    elif f'{key}-value' in imported_value_element.attrib:
+                        e.text = imported_tree.getroot().attrib[key]
+
+    title_element = template_tree.find('head/title')
+    title = title_element.text
 
     # fill the template, and write it
     for href, page_tree in pages.items():
+        page_tree_attrib = page_tree.getroot().attrib
+        if 'title' in page_tree_attrib:
+            title_element.text = f'{page_tree_attrib["title"]} | {title}'
+        else:
+            title_element.text = title
+
         main_tree = template_tree.find('.//main')
         main_tree.clear()
         main_tree.extend(page_tree.iterfind('.*'))
