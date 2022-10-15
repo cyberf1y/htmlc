@@ -54,6 +54,7 @@ Starting with the following files:
 *lhtml* will write the following:
 * *index.html*
 ```html
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>site</title>
@@ -85,6 +86,7 @@ Starting with the following files:
 
 * *about.html*
 ```html
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>site</title>

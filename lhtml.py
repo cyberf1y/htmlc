@@ -30,7 +30,13 @@ def main():
         main_tree.clear()
         main_tree.extend(page_tree.iterfind('.*'))
         ElementTree.indent(template_tree, space='  ', level=0)
-        template_tree.write(href[1:], encoding='utf-8', method='html')
+
+        page_root = template_tree.getroot()
+        page = ElementTree.tostring(page_root, encoding='utf-8', method='html')
+
+        with open(href[1:], 'wb') as file:
+            file.write(b'<!DOCTYPE html>\n')
+            file.write(page)
 
 
 if __name__ == '__main__':
