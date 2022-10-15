@@ -67,7 +67,8 @@ def main():
         # fill the template's main
         template_main_tree.clear()
         template_main_tree.extend(page_tree.iterfind('.*'))
-        ElementTree.indent(template_tree, space='  ', level=0)
+        # available since python 3.9
+        # ElementTree.indent(template_tree, space='  ', level=0)
         page = ElementTree.tostring(
             template_tree_root, encoding='utf-8', method='html')
 
