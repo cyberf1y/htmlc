@@ -209,3 +209,10 @@ Starting with the following files:
   </body>
 </html>
 ```
+
+#### Note
+You can reproduce the example by running the following commands:
+```sh
+cd example
+py ../lhtml.py
+```
