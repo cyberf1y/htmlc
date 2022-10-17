@@ -51,15 +51,22 @@ def main():
                 f'/{importee.attrib["import"][:-4]}.html',
                 ElementTree.parse(importee.attrib['import'])
             )
+            imported_root = imported.getroot()
             for key_value in importee.attrib['values'].split(';'):
                 key, value = key_value.split('=')
-                for element in importee.iterfind(f'.//*[@import-value="{key}"]'):
-                    del element.attrib['import-value']
+                for e in importee.iterfind(f'.//*[@import-value="{key}"]'):
+                    del e.attrib['import-value']
                     imported_value = imported.find(value)
-                    if imported_value.text:
-                        element.text = imported_value.text
-                    elif f'{key}-value' in imported_value.attrib:
-                        element.text = imported.getroot().attrib[key]
+                    imported_value_content = list(imported_value.iterfind('.*'))
+
+                    # if the imported value has no content, try looking at
+                    # its attributes
+                    if not imported_value.text and not imported_value_content:
+                        if f'{key}-value' in imported_value.attrib:
+                            e.text = imported_root.attrib[key]
+                    else:
+                        e.text = imported_value.text
+                        e.extend(imported_value.iterfind('.*'))
 
         # fill the template's main
         template_main.clear()
