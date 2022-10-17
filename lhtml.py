@@ -40,7 +40,7 @@ def main():
         if 'title' in page_tree_attrib:
             title_element.text = f'{page_tree_attrib["title"]} | {title}'
             for e in page_tree.iterfind('.//*[@title-value="true"]'):
-                e.clear()
+                del e.attrib['title-value']
                 e.text = page_tree_attrib['title']
         else:
             title_element.text = title
@@ -57,7 +57,7 @@ def main():
             for key_value in page_tree_attrib['values'].split(';'):
                 key, value = key_value.split('=')
                 for e in page_tree.iterfind(f'.//*[@import-value="{key}"]'):
-                    e.clear()
+                    del e.attrib['import-value']
                     import_value_element = imported_tree.find(value)
                     if import_value_element.text:
                         e.text = import_value_element.text
