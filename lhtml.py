@@ -45,23 +45,21 @@ def main():
             title.text = title_text
 
         # import values
-        if 'import' in page_attrib and 'values' in page_attrib:
+        for importee in page.iterfind('.//*[@import]'):
             # load the tree only if it isn't already loaded
-            import_href = f'/{page_attrib["import"][:-4]}.html'
-            if import_href in pages:
-                imported = pages[import_href]
-            else:
-                imported = ElementTree.parse(page_attrib['import'])
-
-            for key_value in page_attrib['values'].split(';'):
+            imported = pages.get(
+                f'/{importee.attrib["import"][:-4]}.html',
+                ElementTree.parse(importee.attrib['import'])
+            )
+            for key_value in importee.attrib['values'].split(';'):
                 key, value = key_value.split('=')
-                for e in page.iterfind(f'.//*[@import-value="{key}"]'):
-                    del e.attrib['import-value']
-                    import_value = imported.find(value)
-                    if import_value.text:
-                        e.text = import_value.text
-                    elif f'{key}-value' in import_value.attrib:
-                        e.text = imported.getroot().attrib[key]
+                for element in importee.iterfind(f'.//*[@import-value="{key}"]'):
+                    del element.attrib['import-value']
+                    imported_value = imported.find(value)
+                    if imported_value.text:
+                        element.text = imported_value.text
+                    elif f'{key}-value' in imported_value.attrib:
+                        element.text = imported.getroot().attrib[key]
 
         # fill the template's main
         template_main.clear()
