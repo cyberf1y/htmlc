@@ -68,6 +68,9 @@ def main():
                         e.text = imported_value.text
                         e.extend(imported_value.iterfind('.*'))
 
+            del importee.attrib['import']
+            del importee.attrib['values']
+
         # fill the template's main
         template_main.clear()
         template_main.extend(page.iterfind('.*'))
