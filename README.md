@@ -1,10 +1,18 @@
 # lhtml
+
+## Installation
+```sh
+git clone git@github.com:cyberf1y/lhtml.git
+chmod +x lhtml/lhtml.py
+ln -s "$PWD/lhtml/lhtml.py" ~/.local/bin/
+```
+
 ## Name
 *lhtml* - link xml files into html pages
 
 ## Synopsis
 ```sh
-py lhtml.py
+lhtml.py
 ```
 
 ## Description
