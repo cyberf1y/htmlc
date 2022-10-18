@@ -58,14 +58,15 @@ def main():
                 for e in importee.iterfind(f'.//*[@import-value="{key}"]'):
                     del e.attrib['import-value']
                     imported_value = imported.find(value)
-                    imported_value_content = list(imported_value.iterfind('.*'))
-
-                    # if the imported value has no content, try looking at
-                    # its attributes
-                    if not imported_value.text and not imported_value_content:
-                        if f'{key}-value' in imported_value.attrib:
+                    for k, v in imported_value.attrib.items():
+                        # if the imported value references a root value, copy
+                        # the root value here, as well
+                        if k == f'{key}-value':
                             e.text = imported_root.attrib[key]
-                    else:
+                        else:
+                            e.attrib[k] = v
+
+                    if not e.text:
                         e.text = imported_value.text
                         e.extend(imported_value.iterfind('.*'))
 
