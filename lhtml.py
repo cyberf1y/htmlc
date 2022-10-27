@@ -22,7 +22,17 @@ def main():
             raise LHTMLError(f'"{file}" appears {n} times in the argument list')
 
     for file in args.files:
+        file_dir = os.path.dirname(file)
         file_tree = ElementTree.parse(file)
+        for importee in file_tree.iterfind('.//*[@import]'):
+            file_to_import = os.path.join(file_dir, importee.attrib['import'])
+            imported = ElementTree.parse(file_to_import).getroot()
+
+            del importee.attrib['import']
+            importee.attrib.update(imported.attrib)
+            importee.text = imported.text
+            importee.extend(imported.iterfind('.*'))
+
         ElementTree.indent(file_tree, space='  ', level=0)
         file_string = ElementTree.tostring(
             file_tree.getroot(),
@@ -30,7 +40,6 @@ def main():
             method='html',
         )
 
-        file_dir = os.path.dirname(file)
         os.makedirs(os.path.join(args.output, file_dir), exist_ok=True)
         with open(os.path.join(args.output, file), 'wb') as fd:
             fd.write(b'<!DOCTYPE html>\n')
