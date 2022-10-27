@@ -2,6 +2,7 @@
 from argparse import ArgumentParser
 from collections import Counter
 import os
+import sys
 from xml.etree import ElementTree
 
 
@@ -38,7 +39,9 @@ def main():
             importee.text = imported.text
             importee.extend(imported.iterfind('.*'))
 
-        ElementTree.indent(file_tree, space='  ', level=0)
+        if sys.version_info.minor >= 9:
+            ElementTree.indent(file_tree, space='  ', level=0)
+
         file_string = ElementTree.tostring(
             file_tree.getroot(),
             encoding='utf-8',
