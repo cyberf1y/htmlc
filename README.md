@@ -24,8 +24,10 @@ without relying on JavaScript.
 *lhtml* can reuse HTML elements with the attribute `import`.
 
 ### `import`
-Setting the attribute `import=file.html` of an HTML element replaces it with the
-HTML element in *file.html*.
+Setting the attribute `import=file.html:xpath` of an HTML element replaces its
+inner HTML with the inner HTML of the element in *file.html*, described by
+*xpath* ([supported *XPath* syntax](
+https://docs.python.org/3/library/xml.etree.elementtree.html#xpath-support)).
 
 #### Example
 Execute
