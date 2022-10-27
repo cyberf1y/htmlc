@@ -21,12 +21,16 @@ def main():
         if n > 1:
             raise LHTMLError(f'"{file}" appears {n} times in the argument list')
 
+    loaded_file_trees = dict()
+    def get_loaded_file_tree(file):
+        return loaded_file_trees.setdefault(file, ElementTree.parse(file))
+
     for file in args.files:
         file_dir = os.path.dirname(file)
-        file_tree = ElementTree.parse(file)
+        file_tree = get_loaded_file_tree(file)
         for importee in file_tree.iterfind('.//*[@import]'):
             file_to_import = os.path.join(file_dir, importee.attrib['import'])
-            imported = ElementTree.parse(file_to_import).getroot()
+            imported = get_loaded_file_tree(file_to_import).getroot()
 
             del importee.attrib['import']
             importee.attrib.update(imported.attrib)
