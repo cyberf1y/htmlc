@@ -26,3 +26,10 @@ without relying on JavaScript.
 ### `import`
 Setting the attribute `import=file.html` of an HTML element replaces it with the
 HTML element in *file.html*.
+
+#### Example
+Execute
+```sh
+cd examples
+../lhtml.py index.html # or lhtml.py index.html, if lhtml.py is in the PATH
+```
