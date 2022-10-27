@@ -29,8 +29,9 @@ def main():
         file_dir = os.path.dirname(file)
         file_tree = get_loaded_file_tree(file)
         for importee in file_tree.iterfind('.//*[@import]'):
-            file_to_import = os.path.join(file_dir, importee.attrib['import'])
-            imported = get_loaded_file_tree(file_to_import).getroot()
+            import_file, xpath = importee.attrib['import'].split(':')
+            import_path = os.path.join(file_dir, import_file)
+            imported = get_loaded_file_tree(import_path).find(xpath)
 
             del importee.attrib['import']
             importee.attrib.update(imported.attrib)
