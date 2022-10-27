@@ -6,21 +6,21 @@ import sys
 from xml.etree import ElementTree
 
 
-class LHTMLError(Exception):
+class HTMLCError(Exception):
     def __init__(self, message):
         self.message = message
         super().__init__(self.message)
 
 
 def main():
-    parser = ArgumentParser(description='link HTML files')
+    parser = ArgumentParser(description='HTML compiler')
     parser.add_argument(dest='files', metavar='FILE', nargs='+')
     parser.add_argument('-o', '--output', metavar='DIR', default='output')
     args = parser.parse_args()
 
     for file, n in Counter(args.files).items():
         if n > 1:
-            raise LHTMLError(f'"{file}" appears {n} times in the argument list')
+            raise HTMLCError(f'"{file}" appears {n} times in the argument list')
 
     loaded_file_trees = dict()
     def get_loaded_file_tree(file):

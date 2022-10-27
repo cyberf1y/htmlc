@@ -1,27 +1,27 @@
 #
-lhtml
+htmlc
 
 ## Installation
 ```sh
-git clone git@github.com:cyberf1y/lhtml.git
-chmod +x lhtml/lhtml.py
-ln -s "$PWD/lhtml/lhtml.py" ~/.local/bin/
+git clone git@github.com:cyberf1y/htmlc.git
+chmod +x htmlc/htmlc.py
+ln -s "$PWD/htmlc/htmlc.py" ~/.local/bin/
 ```
 
 ## Name
-*lhtml* - link HTML files
+*htmlc* - HTML compiler
 
 ## Synopsis
 ```sh
-lhtml.py [-h] [-o DIR] FILE [FILE ...]
+htmlc.py [-h] [-o DIR] FILE [FILE ...]
 ```
 
 ## Description
-*lhtml* is a tool for linking HTML files, allowing the reuse of HTML elements,
+*htmlc* is a tool for compiling HTML files, allowing the reuse of HTML elements,
 without relying on JavaScript.
 
 ### Imports
-*lhtml* can reuse HTML elements with the attribute `import`.
+*htmlc* can reuse HTML elements with the attribute `import`.
 
 ### `import`
 Setting the attribute `import=file.html:xpath` of an HTML element replaces its
@@ -33,5 +33,5 @@ https://docs.python.org/3/library/xml.etree.elementtree.html#xpath-support)).
 Execute
 ```sh
 cd examples
-../lhtml.py index.html # or lhtml.py index.html, if lhtml.py is in the PATH
+../htmlc.py index.html # or htmlc.py index.html, if htmlc.py is in the PATH
 ```
