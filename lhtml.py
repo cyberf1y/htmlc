@@ -23,6 +23,7 @@ def main():
 
     for file in args.files:
         file_tree = ElementTree.parse(file)
+        ElementTree.indent(file_tree, space='  ', level=0)
         file_string = ElementTree.tostring(
             file_tree.getroot(),
             encoding='utf-8',
@@ -32,7 +33,7 @@ def main():
         file_dir = os.path.dirname(file)
         os.makedirs(os.path.join(args.output, file_dir), exist_ok=True)
         with open(os.path.join(args.output, file), 'wb') as fd:
-            fd.write(b'<!DOCTYPE html>')
+            fd.write(b'<!DOCTYPE html>\n')
             fd.write(file_string)
 
 
