@@ -4,7 +4,20 @@
     <title>Posts | cyberf1y</title>
   </head>
   <body>
-    <header import="header.html" />
-    <footer import="footer.html" />
+    <header import="header.html:." />
+    <main>
+      <h1>Posts</h1>
+      <ul>
+        <li>
+          <a href="/posts/lorem.html">
+            <article>
+              <h2 import="posts/lorem.html:h1" />
+              <p import="posts/lorem.html:p" />
+            </article>
+          </a>
+        </li>
+      </ul>
+    </main>
+    <footer import="footer.html:." />
   </body>
 </html>
