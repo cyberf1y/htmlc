@@ -24,7 +24,10 @@ def main():
 
     loaded_file_trees = dict()
     def get_loaded_file_tree(file):
-        return loaded_file_trees.setdefault(file, ElementTree.parse(file))
+        try:
+            return loaded_file_trees.setdefault(file, ElementTree.parse(file))
+        except ElementTree.ParseError as err:
+            raise HTMLCError(f'{file}: {err}') from err
 
     for file in args.files:
         file_dir = os.path.dirname(file)
